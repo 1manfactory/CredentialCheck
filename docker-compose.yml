@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: credentialcheck-postgres
+    environment:
+      POSTGRES_DB: credentialcheck
+      POSTGRES_USER: credentialcheck
+      POSTGRES_PASSWORD: credentialcheck
+    ports:
+      - "5432:5432"
+    volumes:
+      - credentialcheck_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  credentialcheck_postgres_data:
