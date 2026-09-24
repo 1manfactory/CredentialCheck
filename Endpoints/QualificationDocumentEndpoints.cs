@@ -61,5 +61,26 @@ public static class QualificationDocumentEndpoints
 				return Results.BadRequest(new { error = ex.Message });
 			}
 		});
+
+		app.MapPatch("/api/cases/{caseId:guid}/documents/{documentId:guid}/review-status", async (
+			Guid caseId,
+			Guid documentId,
+			UpdateQualificationDocumentReviewStatusRequest request,
+			QualificationDocumentService service) =>
+		{
+			try
+			{
+				var document = await service.UpdateReviewStatusAsync(caseId, documentId, request);
+
+				return document is null
+					? Results.NotFound()
+					: Results.Ok(document);
+			}
+			catch (InvalidOperationException ex)
+			{
+				return Results.BadRequest(new { error = ex.Message });
+			}
+		});
+
 	}
 }

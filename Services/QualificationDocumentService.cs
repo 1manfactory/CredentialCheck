@@ -77,4 +77,41 @@ public class QualificationDocumentService
 
 		return QualificationDocumentMapper.ToResponse(document);
 	}
+
+	public async Task<QualificationDocumentResponse?> UpdateReviewStatusAsync(
+		Guid qualificationCaseId,
+		Guid documentId,
+		UpdateQualificationDocumentReviewStatusRequest request)
+	{
+		if (!Enum.TryParse<DocumentReviewStatus>(request.ReviewStatus, ignoreCase: true, out var newStatus))
+		{
+			throw new InvalidOperationException($"Invalid document review status: {request.ReviewStatus}");
+		}
+
+		var document = await _dbContext.QualificationDocuments
+			.FirstOrDefaultAsync(d =>
+				d.Id == documentId &&
+				d.QualificationCaseId == qualificationCaseId);
+
+		if (document is null)
+		{
+			return null;
+		}
+
+		var oldStatus = document.ReviewStatus;
+
+		document.ReviewStatus = newStatus;
+
+		_dbContext.AuditLogEntries.Add(new AuditLogEntry
+		{
+			QualificationCaseId = qualificationCaseId,
+			Action = "DocumentReviewStatusChanged",
+			Details = $"Document review status for '{document.Title}' changed from {oldStatus} to {newStatus}.",
+			CreatedAt = DateTimeOffset.UtcNow
+		});
+
+		await _dbContext.SaveChangesAsync();
+
+		return QualificationDocumentMapper.ToResponse(document);
+	}
 }
