@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace CredentialCheck.Models;
 
+[Index(nameof(ApplicantEmail), IsUnique = true)]
 public class QualificationCase
 {
     public Guid Id { get; set; } = Guid.NewGuid();

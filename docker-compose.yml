@@ -2,6 +2,7 @@ services:
   postgres:
     image: postgres:16
     container_name: credentialcheck-postgres
+    restart: unless-stopped
     environment:
       POSTGRES_DB: credentialcheck
       POSTGRES_USER: credentialcheck

@@ -1,47 +1,47 @@
 using CredentialCheck.Dtos;
 using CredentialCheck.Services;
+using CredentialCheck.Validators;
 
 namespace CredentialCheck.Endpoints;
 
 public static class QualificationCaseEndpoints
 {
-    public static void MapQualificationCaseEndpoints(this WebApplication app)
-    {
-        app.MapGet("/api/cases", async (QualificationCaseService service) =>
-        {
-            var cases = await service.GetAllAsync();
-            return Results.Ok(cases);
-        });
+	public static void MapQualificationCaseEndpoints(this WebApplication app)
+	{
+		app.MapGet("/api/cases", async (QualificationCaseService service) =>
+		{
+			var cases = await service.GetAllAsync();
+			return Results.Ok(cases);
+		});
 
-        app.MapGet("/api/cases/{id:guid}", async (Guid id, QualificationCaseService service) =>
-        {
-            var qualificationCase = await service.GetByIdAsync(id);
+		app.MapGet("/api/cases/{id:guid}", async (Guid id, QualificationCaseService service) =>
+		{
+			var qualificationCase = await service.GetByIdAsync(id);
 
-            return qualificationCase is null
-                ? Results.NotFound()
-                : Results.Ok(qualificationCase);
-        });
+			return qualificationCase is null
+				? Results.NotFound()
+				: Results.Ok(qualificationCase);
+		});
 
-        app.MapPost("/api/cases", async (CreateQualificationCaseRequest request, QualificationCaseService service) =>
-        {
-            if (string.IsNullOrWhiteSpace(request.ApplicantName))
-            {
-                return Results.BadRequest(new { error = "ApplicantName is required." });
-            }
+		app.MapPost("/api/cases", async (CreateQualificationCaseRequest request, QualificationCaseService service) =>
+		{
+			var errors = QualificationCaseValidator.Validate(request);
 
-            if (string.IsNullOrWhiteSpace(request.ApplicantEmail))
-            {
-                return Results.BadRequest(new { error = "ApplicantEmail is required." });
-            }
+			if (errors.Count > 0)
+			{
+				return Results.BadRequest(new { errors });
+			}
 
-            if (string.IsNullOrWhiteSpace(request.Country))
-            {
-                return Results.BadRequest(new { error = "Country is required." });
-            }
+			try
+			{
+				var qualificationCase = await service.CreateAsync(request);
 
-            var qualificationCase = await service.CreateAsync(request);
-
-            return Results.Created($"/api/cases/{qualificationCase.Id}", qualificationCase);
-        });
-    }
+				return Results.Created($"/api/cases/{qualificationCase.Id}", qualificationCase);
+			}
+			catch (InvalidOperationException ex)
+			{
+				return Results.Conflict(new { error = ex.Message });
+			}
+		});
+	}
 }

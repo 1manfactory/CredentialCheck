@@ -48,6 +48,9 @@ namespace CredentialCheck.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicantEmail")
+                        .IsUnique();
+
                     b.ToTable("QualificationCases");
                 });
 #pragma warning restore 612, 618
