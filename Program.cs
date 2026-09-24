@@ -16,6 +16,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<QualificationCaseService>();
 
+builder.Services.AddScoped<QualificationDocumentService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -37,5 +39,7 @@ app.MapGet("/health", () => Results.Ok(new
 }));
 
 app.MapQualificationCaseEndpoints();
+
+app.MapQualificationDocumentEndpoints();
 
 app.Run();

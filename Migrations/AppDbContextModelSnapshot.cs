@@ -78,6 +78,41 @@ namespace CredentialCheck.Migrations
 
                     b.ToTable("QualificationCases");
                 });
+
+            modelBuilder.Entity("CredentialCheck.Models.QualificationDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DocumentType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateOnly?>("IssueDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("IssuingInstitution")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("QualificationCaseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QualificationDocuments");
+                });
 #pragma warning restore 612, 618
         }
     }

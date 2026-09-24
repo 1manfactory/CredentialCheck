@@ -13,4 +13,6 @@ public class AppDbContext : DbContext
 	public DbSet<QualificationCase> QualificationCases => Set<QualificationCase>();
 
 	public DbSet<AuditLogEntry> AuditLogEntries => Set<AuditLogEntry>();
+
+	public DbSet<QualificationDocument> QualificationDocuments => Set<QualificationDocument>();
 }
