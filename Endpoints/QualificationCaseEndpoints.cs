@@ -63,5 +63,18 @@ public static class QualificationCaseEndpoints
 			}
 		});
 
+		app.MapGet("/api/cases/{id:guid}/audit-log", async (Guid id, QualificationCaseService service) =>
+		{
+			try
+			{
+				var entries = await service.GetAuditLogAsync(id);
+				return Results.Ok(entries);
+			}
+			catch (KeyNotFoundException ex)
+			{
+				return Results.NotFound(new { error = ex.Message });
+			}
+		});
+
 	}
 }

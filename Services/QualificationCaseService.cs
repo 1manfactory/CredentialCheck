@@ -103,4 +103,24 @@ public class QualificationCaseService
 
 		return QualificationCaseMapper.ToResponse(qualificationCase);
 	}
+
+	public async Task<List<AuditLogEntryResponse>> GetAuditLogAsync(Guid qualificationCaseId)
+	{
+		var caseExists = await _dbContext.QualificationCases
+			.AnyAsync(c => c.Id == qualificationCaseId);
+
+		if (!caseExists)
+		{
+			throw new KeyNotFoundException("Qualification case not found.");
+		}
+
+		var entries = await _dbContext.AuditLogEntries
+			.Where(e => e.QualificationCaseId == qualificationCaseId)
+			.OrderByDescending(e => e.CreatedAt)
+			.ToListAsync();
+
+		return entries
+			.Select(AuditLogEntryMapper.ToResponse)
+			.ToList();
+	}
 }
