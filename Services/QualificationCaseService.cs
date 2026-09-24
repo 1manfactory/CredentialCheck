@@ -1,5 +1,6 @@
 using CredentialCheck.Data;
 using CredentialCheck.Dtos;
+using CredentialCheck.Mappers;
 using CredentialCheck.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,20 +15,28 @@ public class QualificationCaseService
 		_dbContext = dbContext;
 	}
 
-	public async Task<List<QualificationCase>> GetAllAsync()
+	public async Task<List<QualificationCaseResponse>> GetAllAsync()
 	{
-		return await _dbContext.QualificationCases
+		var cases = await _dbContext.QualificationCases
 			.OrderByDescending(c => c.CreatedAt)
 			.ToListAsync();
+
+		return cases
+			.Select(QualificationCaseMapper.ToResponse)
+			.ToList();
 	}
 
-	public async Task<QualificationCase?> GetByIdAsync(Guid id)
+	public async Task<QualificationCaseResponse?> GetByIdAsync(Guid id)
 	{
-		return await _dbContext.QualificationCases
+		var qualificationCase = await _dbContext.QualificationCases
 			.FirstOrDefaultAsync(c => c.Id == id);
+
+		return qualificationCase is null
+			? null
+			: QualificationCaseMapper.ToResponse(qualificationCase);
 	}
 
-	public async Task<QualificationCase> CreateAsync(CreateQualificationCaseRequest request)
+	public async Task<QualificationCaseResponse> CreateAsync(CreateQualificationCaseRequest request)
 	{
 		var normalizedEmail = request.ApplicantEmail.Trim().ToLowerInvariant();
 
@@ -51,6 +60,6 @@ public class QualificationCaseService
 		_dbContext.QualificationCases.Add(qualificationCase);
 		await _dbContext.SaveChangesAsync();
 
-		return qualificationCase;
+		return QualificationCaseMapper.ToResponse(qualificationCase);
 	}
 }
