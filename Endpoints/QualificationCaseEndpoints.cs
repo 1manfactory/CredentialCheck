@@ -43,5 +43,25 @@ public static class QualificationCaseEndpoints
 				return Results.Conflict(new { error = ex.Message });
 			}
 		});
+
+		app.MapPatch("/api/cases/{id:guid}/status", async (
+			Guid id,
+			UpdateQualificationCaseStatusRequest request,
+			QualificationCaseService service) =>
+		{
+			try
+			{
+				var qualificationCase = await service.UpdateStatusAsync(id, request);
+
+				return qualificationCase is null
+					? Results.NotFound()
+					: Results.Ok(qualificationCase);
+			}
+			catch (InvalidOperationException ex)
+			{
+				return Results.BadRequest(new { error = ex.Message });
+			}
+		});
+
 	}
 }

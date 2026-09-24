@@ -62,4 +62,26 @@ public class QualificationCaseService
 
 		return QualificationCaseMapper.ToResponse(qualificationCase);
 	}
+
+	public async Task<QualificationCaseResponse?> UpdateStatusAsync(Guid id, UpdateQualificationCaseStatusRequest request)
+	{
+		if (!Enum.TryParse<QualificationCaseStatus>(request.Status, ignoreCase: true, out var newStatus))
+		{
+			throw new InvalidOperationException($"Invalid status: {request.Status}");
+		}
+
+		var qualificationCase = await _dbContext.QualificationCases
+			.FirstOrDefaultAsync(c => c.Id == id);
+
+		if (qualificationCase is null)
+		{
+			return null;
+		}
+
+		qualificationCase.Status = newStatus;
+
+		await _dbContext.SaveChangesAsync();
+
+		return QualificationCaseMapper.ToResponse(qualificationCase);
+	}
 }
