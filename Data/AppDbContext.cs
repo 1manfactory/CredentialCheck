@@ -5,10 +5,12 @@ namespace CredentialCheck.Data;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options)
-    {
-    }
+	public AppDbContext(DbContextOptions<AppDbContext> options)
+		: base(options)
+	{
+	}
 
-    public DbSet<QualificationCase> QualificationCases => Set<QualificationCase>();
+	public DbSet<QualificationCase> QualificationCases => Set<QualificationCase>();
+
+	public DbSet<AuditLogEntry> AuditLogEntries => Set<AuditLogEntry>();
 }

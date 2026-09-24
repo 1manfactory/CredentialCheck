@@ -60,6 +60,15 @@ public class QualificationCaseService
 		_dbContext.QualificationCases.Add(qualificationCase);
 		await _dbContext.SaveChangesAsync();
 
+		_dbContext.AuditLogEntries.Add(new AuditLogEntry
+		{
+			QualificationCaseId = qualificationCase.Id,
+			Action = "CaseCreated",
+			Details = $"Qualification case created for {qualificationCase.ApplicantEmail}.",
+			CreatedAt = DateTimeOffset.UtcNow
+		});
+		await _dbContext.SaveChangesAsync();
+
 		return QualificationCaseMapper.ToResponse(qualificationCase);
 	}
 
@@ -78,7 +87,17 @@ public class QualificationCaseService
 			return null;
 		}
 
+		var oldStatus = qualificationCase.Status;
+
 		qualificationCase.Status = newStatus;
+
+		_dbContext.AuditLogEntries.Add(new AuditLogEntry
+		{
+			QualificationCaseId = qualificationCase.Id,
+			Action = "StatusChanged",
+			Details = $"Status changed from {oldStatus} to {newStatus}.",
+			CreatedAt = DateTimeOffset.UtcNow
+		});
 
 		await _dbContext.SaveChangesAsync();
 
