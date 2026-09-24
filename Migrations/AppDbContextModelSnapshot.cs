@@ -105,6 +105,9 @@ namespace CredentialCheck.Migrations
                     b.Property<Guid>("QualificationCaseId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("ReviewStatus")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");

@@ -11,6 +11,7 @@ public static class QualificationDocumentMapper
 			document.Id,
 			document.QualificationCaseId,
 			document.DocumentType.ToString(),
+			document.ReviewStatus.ToString(),
 			document.Title,
 			document.IssuingInstitution,
 			document.Country,

@@ -8,6 +8,8 @@ public class QualificationDocument
 
 	public DocumentType DocumentType { get; set; } = DocumentType.Other;
 
+	public DocumentReviewStatus ReviewStatus { get; set; } = DocumentReviewStatus.PendingReview;
+
 	public string Title { get; set; } = string.Empty;
 
 	public string IssuingInstitution { get; set; } = string.Empty;
