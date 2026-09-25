@@ -20,6 +20,8 @@ builder.Services.AddScoped<QualificationDocumentService>();
 
 builder.Services.AddScoped<DecisionNoteService>();
 
+builder.Services.AddScoped<DocumentFileStorageService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

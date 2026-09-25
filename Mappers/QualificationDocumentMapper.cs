@@ -16,6 +16,9 @@ public static class QualificationDocumentMapper
 			document.IssuingInstitution,
 			document.Country,
 			document.IssueDate,
+			document.OriginalFileName,
+			document.ContentType,
+			document.FileSizeBytes,
 			document.CreatedAt
 		);
 	}

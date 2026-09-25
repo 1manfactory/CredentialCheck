@@ -85,6 +85,9 @@ namespace CredentialCheck.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("ContentType")
+                        .HasColumnType("text");
+
                     b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("text");
@@ -95,6 +98,9 @@ namespace CredentialCheck.Migrations
                     b.Property<int>("DocumentType")
                         .HasColumnType("integer");
 
+                    b.Property<long?>("FileSizeBytes")
+                        .HasColumnType("bigint");
+
                     b.Property<DateOnly?>("IssueDate")
                         .HasColumnType("date");
 
@@ -102,11 +108,20 @@ namespace CredentialCheck.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("OriginalFileName")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("QualificationCaseId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("ReviewStatus")
                         .HasColumnType("integer");
+
+                    b.Property<string>("StoragePath")
+                        .HasColumnType("text");
+
+                    b.Property<string>("StoredFileName")
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()

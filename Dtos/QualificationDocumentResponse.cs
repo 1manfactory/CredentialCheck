@@ -9,5 +9,8 @@ public record QualificationDocumentResponse(
 	string IssuingInstitution,
 	string Country,
 	DateOnly? IssueDate,
+	string? OriginalFileName,
+	string? ContentType,
+	long? FileSizeBytes,
 	DateTimeOffset CreatedAt
 );

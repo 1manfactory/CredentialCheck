@@ -18,5 +18,15 @@ public class QualificationDocument
 
 	public DateOnly? IssueDate { get; set; }
 
+	public string? OriginalFileName { get; set; }
+
+	public string? StoredFileName { get; set; }
+
+	public string? ContentType { get; set; }
+
+	public long? FileSizeBytes { get; set; }
+
+	public string? StoragePath { get; set; }
+
 	public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.UtcNow;
 }

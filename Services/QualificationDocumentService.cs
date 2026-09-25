@@ -37,7 +37,8 @@ public class QualificationDocumentService
 
 	public async Task<QualificationDocumentResponse> CreateAsync(
 		Guid qualificationCaseId,
-		CreateQualificationDocumentRequest request)
+		CreateQualificationDocumentRequest request,
+		StoredDocumentFile? storedFile = null)
 	{
 		var caseExists = await _dbContext.QualificationCases
 			.AnyAsync(c => c.Id == qualificationCaseId);
@@ -60,6 +61,11 @@ public class QualificationDocumentService
 			IssuingInstitution = request.IssuingInstitution.Trim(),
 			Country = request.Country.Trim(),
 			IssueDate = request.IssueDate,
+			OriginalFileName = storedFile?.OriginalFileName,
+			StoredFileName = storedFile?.StoredFileName,
+			ContentType = storedFile?.ContentType,
+			FileSizeBytes = storedFile?.FileSizeBytes,
+			StoragePath = storedFile?.StoragePath,
 			CreatedAt = DateTimeOffset.UtcNow
 		};
 
