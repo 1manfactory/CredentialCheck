@@ -18,6 +18,8 @@ builder.Services.AddScoped<QualificationCaseService>();
 
 builder.Services.AddScoped<QualificationDocumentService>();
 
+builder.Services.AddScoped<DecisionNoteService>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

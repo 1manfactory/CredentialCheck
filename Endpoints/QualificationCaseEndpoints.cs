@@ -89,13 +89,19 @@ public static class QualificationCaseEndpoints
 
 		app.MapGet("/api/cases/{id:guid}/decision-note", async (
 			Guid id,
-			QualificationCaseService service) =>
+			QualificationCaseService caseService,
+			DecisionNoteService decisionNoteService) =>
 		{
-			var decisionNote = await service.GetDecisionNoteAsync(id);
+			var summary = await caseService.GetReviewSummaryAsync(id);
 
-			return decisionNote is null
-				? Results.NotFound()
-				: Results.Ok(decisionNote);
+			if (summary is null)
+			{
+				return Results.NotFound();
+			}
+
+			var decisionNote = decisionNoteService.CreateDecisionNote(summary);
+
+			return Results.Ok(decisionNote);
 		});
 
 	}
