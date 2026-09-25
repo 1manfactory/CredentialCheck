@@ -149,23 +149,23 @@ public class QualificationCaseService
 		var rejectedCount = documents.Count(d => d.ReviewStatus == DocumentReviewStatus.Rejected);
 		var needsClarificationCount = documents.Count(d => d.ReviewStatus == DocumentReviewStatus.NeedsClarification);
 
-		var recommendation = "InReview";
+		var recommendation = ReviewRecommendation.InReview;
 
 		if (documents.Count == 0)
 		{
-			recommendation = "NoDocuments";
+			recommendation = ReviewRecommendation.NoDocuments;
 		}
 		else if (needsClarificationCount > 0)
 		{
-			recommendation = "NeedsClarification";
+			recommendation = ReviewRecommendation.NeedsClarification;
 		}
 		else if (rejectedCount > 0)
 		{
-			recommendation = "ManualDecisionRequired";
+			recommendation = ReviewRecommendation.ManualDecisionRequired;
 		}
 		else if (pendingReviewCount == 0 && acceptedCount == documents.Count)
 		{
-			recommendation = "ReadyForDecision";
+			recommendation = ReviewRecommendation.ReadyForDecision;
 		}
 
 		return new QualificationCaseReviewSummaryResponse(
@@ -176,7 +176,7 @@ public class QualificationCaseService
 			acceptedCount,
 			rejectedCount,
 			needsClarificationCount,
-			recommendation,
+			recommendation.ToString(),
 			lastActivityAt
 		);
 	}
