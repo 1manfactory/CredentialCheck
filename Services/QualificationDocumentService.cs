@@ -71,11 +71,15 @@ public class QualificationDocumentService
 
 		_dbContext.QualificationDocuments.Add(document);
 
+		var fileDetails = storedFile is null
+			? "No file attached."
+			: $"File: {storedFile.OriginalFileName}, {storedFile.ContentType}, {storedFile.FileSizeBytes} bytes.";
+
 		_dbContext.AuditLogEntries.Add(new AuditLogEntry
 		{
 			QualificationCaseId = qualificationCaseId,
 			Action = "DocumentAdded",
-			Details = $"Document added: {document.Title} ({document.DocumentType}).",
+			Details = $"Document added: {document.Title} ({document.DocumentType}). {fileDetails}",
 			CreatedAt = DateTimeOffset.UtcNow
 		});
 
