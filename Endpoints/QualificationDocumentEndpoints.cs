@@ -149,5 +149,38 @@ public static class QualificationDocumentEndpoints
 			}
 		});
 
+		app.MapGet("/api/cases/{caseId:guid}/documents/{documentId:guid}/file", async (
+			Guid caseId,
+			Guid documentId,
+			QualificationDocumentService documentService) =>
+		{
+			var document = await documentService.GetDocumentEntityAsync(caseId, documentId);
+
+			if (document is null)
+			{
+				return Results.NotFound(new { error = "Document not found." });
+			}
+
+			if (string.IsNullOrWhiteSpace(document.StoragePath) ||
+				!File.Exists(document.StoragePath))
+			{
+				return Results.NotFound(new { error = "Stored file not found." });
+			}
+
+			var contentType = string.IsNullOrWhiteSpace(document.ContentType)
+				? "application/octet-stream"
+				: document.ContentType;
+
+			var downloadFileName = string.IsNullOrWhiteSpace(document.OriginalFileName)
+				? document.StoredFileName ?? "document"
+				: document.OriginalFileName;
+
+			return Results.File(
+				document.StoragePath,
+				contentType,
+				downloadFileName
+			);
+		});
+
 	}
 }

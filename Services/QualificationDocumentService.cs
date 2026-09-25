@@ -120,4 +120,15 @@ public class QualificationDocumentService
 
 		return QualificationDocumentMapper.ToResponse(document);
 	}
+
+	public async Task<QualificationDocument?> GetDocumentEntityAsync(
+		Guid qualificationCaseId,
+		Guid documentId)
+	{
+		return await _dbContext.QualificationDocuments
+			.FirstOrDefaultAsync(d =>
+				d.Id == documentId &&
+				d.QualificationCaseId == qualificationCaseId);
+	}
+
 }
