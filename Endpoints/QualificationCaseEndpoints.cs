@@ -76,5 +76,16 @@ public static class QualificationCaseEndpoints
 			}
 		});
 
+		app.MapGet("/api/cases/{id:guid}/review-summary", async (
+			Guid id,
+			QualificationCaseService service) =>
+		{
+			var summary = await service.GetReviewSummaryAsync(id);
+
+			return summary is null
+				? Results.NotFound()
+				: Results.Ok(summary);
+		});
+
 	}
 }

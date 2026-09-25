@@ -123,4 +123,61 @@ public class QualificationCaseService
 			.Select(AuditLogEntryMapper.ToResponse)
 			.ToList();
 	}
+
+	public async Task<QualificationCaseReviewSummaryResponse?> GetReviewSummaryAsync(Guid qualificationCaseId)
+	{
+		var qualificationCase = await _dbContext.QualificationCases
+			.FirstOrDefaultAsync(c => c.Id == qualificationCaseId);
+
+		if (qualificationCase is null)
+		{
+			return null;
+		}
+
+		var documents = await _dbContext.QualificationDocuments
+			.Where(d => d.QualificationCaseId == qualificationCaseId)
+			.ToListAsync();
+
+		var lastActivityAt = await _dbContext.AuditLogEntries
+			.Where(e => e.QualificationCaseId == qualificationCaseId)
+			.OrderByDescending(e => e.CreatedAt)
+			.Select(e => (DateTimeOffset?)e.CreatedAt)
+			.FirstOrDefaultAsync();
+
+		var pendingReviewCount = documents.Count(d => d.ReviewStatus == DocumentReviewStatus.PendingReview);
+		var acceptedCount = documents.Count(d => d.ReviewStatus == DocumentReviewStatus.Accepted);
+		var rejectedCount = documents.Count(d => d.ReviewStatus == DocumentReviewStatus.Rejected);
+		var needsClarificationCount = documents.Count(d => d.ReviewStatus == DocumentReviewStatus.NeedsClarification);
+
+		var recommendation = "InReview";
+
+		if (documents.Count == 0)
+		{
+			recommendation = "NoDocuments";
+		}
+		else if (needsClarificationCount > 0)
+		{
+			recommendation = "NeedsClarification";
+		}
+		else if (rejectedCount > 0)
+		{
+			recommendation = "ManualDecisionRequired";
+		}
+		else if (pendingReviewCount == 0 && acceptedCount == documents.Count)
+		{
+			recommendation = "ReadyForDecision";
+		}
+
+		return new QualificationCaseReviewSummaryResponse(
+			qualificationCase.Id,
+			qualificationCase.Status.ToString(),
+			documents.Count,
+			pendingReviewCount,
+			acceptedCount,
+			rejectedCount,
+			needsClarificationCount,
+			recommendation,
+			lastActivityAt
+		);
+	}
 }
