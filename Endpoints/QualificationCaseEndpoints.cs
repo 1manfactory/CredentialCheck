@@ -87,5 +87,16 @@ public static class QualificationCaseEndpoints
 				: Results.Ok(summary);
 		});
 
+		app.MapGet("/api/cases/{id:guid}/decision-note", async (
+			Guid id,
+			QualificationCaseService service) =>
+		{
+			var decisionNote = await service.GetDecisionNoteAsync(id);
+
+			return decisionNote is null
+				? Results.NotFound()
+				: Results.Ok(decisionNote);
+		});
+
 	}
 }
