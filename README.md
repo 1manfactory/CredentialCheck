@@ -192,13 +192,13 @@ docker compose up -d
 Die Anwendung läuft dann auf:
 
 ```text
-http://dev20:5000
+http://<server-host:5000
 ```
 
 Health Check:
 
 ```text
-GET http://dev20:5000/health
+GET http://<server-host:5000/health
 ```
 
 ## Beispiel: Fall anlegen
