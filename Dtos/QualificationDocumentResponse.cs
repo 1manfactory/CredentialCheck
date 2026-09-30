@@ -1,5 +1,6 @@
 namespace CredentialCheck.Dtos;
 
+// Gibt die Daten eines Qualifikationsdokuments zurück.
 public record QualificationDocumentResponse(
 	Guid Id,
 	Guid QualificationCaseId,

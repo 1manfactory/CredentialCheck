@@ -1,5 +1,6 @@
 namespace CredentialCheck.Models;
 
+// Speichert die Angaben und Datei zu einem Qualifikationsdokument.
 public class QualificationDocument
 {
 	public Guid Id { get; set; } = Guid.NewGuid();

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CredentialCheck.Services;
 
+// Verwaltet Dokumente eines Falls und ihren Prüfstatus.
 public class QualificationDocumentService
 {
 	private readonly AppDbContext _dbContext;
@@ -15,6 +16,7 @@ public class QualificationDocumentService
 		_dbContext = dbContext;
 	}
 
+	// Lädt alle Dokumente eines vorhandenen Falls.
 	public async Task<List<QualificationDocumentResponse>> GetByCaseIdAsync(Guid qualificationCaseId)
 	{
 		var caseExists = await _dbContext.QualificationCases
@@ -35,6 +37,7 @@ public class QualificationDocumentService
 			.ToList();
 	}
 
+	// Legt ein Dokument an und verknüpft bei Bedarf eine gespeicherte Datei.
 	public async Task<QualificationDocumentResponse> CreateAsync(
 		Guid qualificationCaseId,
 		CreateQualificationDocumentRequest request,
@@ -88,6 +91,7 @@ public class QualificationDocumentService
 		return QualificationDocumentMapper.ToResponse(document);
 	}
 
+	// Ändert den Prüfstatus eines Dokuments.
 	public async Task<QualificationDocumentResponse?> UpdateReviewStatusAsync(
 		Guid qualificationCaseId,
 		Guid documentId,
@@ -125,6 +129,7 @@ public class QualificationDocumentService
 		return QualificationDocumentMapper.ToResponse(document);
 	}
 
+	// Lädt ein Dokument mit den Daten zum Abrufen seiner Datei.
 	public async Task<QualificationDocument?> GetDocumentEntityAsync(
 		Guid qualificationCaseId,
 		Guid documentId)

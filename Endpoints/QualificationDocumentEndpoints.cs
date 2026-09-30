@@ -3,8 +3,10 @@ using CredentialCheck.Services;
 
 namespace CredentialCheck.Endpoints;
 
+// Stellt API-Endpunkte für Dokumente und hochgeladene Dateien bereit.
 public static class QualificationDocumentEndpoints
 {
+	// Registriert die Endpunkte für Dokumente eines Falls.
 	public static void MapQualificationDocumentEndpoints(this WebApplication app)
 	{
 		app.MapGet("/api/cases/{caseId:guid}/documents", async (

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CredentialCheck.Models;
 
 [Index(nameof(ApplicantEmail), IsUnique = true)]
+// Speichert die Stammdaten und den Status eines Qualifikationsfalls.
 public class QualificationCase
 {
     public Guid Id { get; set; } = Guid.NewGuid();

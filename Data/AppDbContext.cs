@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CredentialCheck.Data;
 
+// Stellt den Zugriff auf die Anwendungsdaten in der Datenbank bereit.
 public class AppDbContext : DbContext
 {
 	public AppDbContext(DbContextOptions<AppDbContext> options)

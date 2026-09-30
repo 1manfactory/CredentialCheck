@@ -1,5 +1,6 @@
 namespace CredentialCheck.Dtos;
 
+// Gibt die wichtigsten Daten eines Qualifikationsfalls zurück.
 public record QualificationCaseResponse(
     Guid Id,
     string ApplicantName,

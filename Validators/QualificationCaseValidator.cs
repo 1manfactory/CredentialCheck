@@ -3,8 +3,10 @@ using CredentialCheck.Dtos;
 
 namespace CredentialCheck.Validators;
 
+// Prüft die Eingaben beim Anlegen eines Qualifikationsfalls.
 public static class QualificationCaseValidator
 {
+	// Gibt Hinweise zu fehlenden oder ungültigen Angaben zurück.
     public static List<string> Validate(CreateQualificationCaseRequest request)
     {
         var errors = new List<string>();

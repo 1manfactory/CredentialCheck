@@ -1,5 +1,6 @@
 namespace CredentialCheck.Dtos;
 
+// Fasst den Prüfstand der Dokumente eines Falls zusammen.
 public record QualificationCaseReviewSummaryResponse(
 	Guid QualificationCaseId,
 	string CaseStatus,

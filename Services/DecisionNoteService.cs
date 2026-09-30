@@ -2,8 +2,10 @@ using CredentialCheck.Dtos;
 
 namespace CredentialCheck.Services;
 
+// Erzeugt aus dem Prüfstand eines Falls eine kurze Entscheidungsvorlage.
 public class DecisionNoteService
 {
+	// Formuliert die Vorlage passend zur aktuellen Empfehlung.
 	public DecisionNoteResponse CreateDecisionNote(QualificationCaseReviewSummaryResponse summary)
 	{
 		var note = summary.Recommendation switch

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CredentialCheck.Services;
 
+// Verwaltet Qualifikationsfälle, ihren Status und den Änderungsverlauf.
 public class QualificationCaseService
 {
 	private readonly AppDbContext _dbContext;
@@ -15,6 +16,7 @@ public class QualificationCaseService
 		_dbContext = dbContext;
 	}
 
+	// Lädt alle Fälle, zuletzt angelegte zuerst.
 	public async Task<List<QualificationCaseResponse>> GetAllAsync()
 	{
 		var cases = await _dbContext.QualificationCases
@@ -26,6 +28,7 @@ public class QualificationCaseService
 			.ToList();
 	}
 
+	// Lädt einen Fall anhand seiner Kennung.
 	public async Task<QualificationCaseResponse?> GetByIdAsync(Guid id)
 	{
 		var qualificationCase = await _dbContext.QualificationCases
@@ -36,6 +39,7 @@ public class QualificationCaseService
 			: QualificationCaseMapper.ToResponse(qualificationCase);
 	}
 
+	// Legt einen neuen Fall an und protokolliert die Erstellung.
 	public async Task<QualificationCaseResponse> CreateAsync(CreateQualificationCaseRequest request)
 	{
 		var normalizedEmail = request.ApplicantEmail.Trim().ToLowerInvariant();
@@ -72,6 +76,7 @@ public class QualificationCaseService
 		return QualificationCaseMapper.ToResponse(qualificationCase);
 	}
 
+	// Ändert den Status eines Falls und protokolliert die Änderung.
 	public async Task<QualificationCaseResponse?> UpdateStatusAsync(Guid id, UpdateQualificationCaseStatusRequest request)
 	{
 		if (!Enum.TryParse<QualificationCaseStatus>(request.Status, ignoreCase: true, out var newStatus))
@@ -104,6 +109,7 @@ public class QualificationCaseService
 		return QualificationCaseMapper.ToResponse(qualificationCase);
 	}
 
+	// Lädt den Änderungsverlauf eines vorhandenen Falls.
 	public async Task<List<AuditLogEntryResponse>> GetAuditLogAsync(Guid qualificationCaseId)
 	{
 		var caseExists = await _dbContext.QualificationCases
@@ -124,6 +130,7 @@ public class QualificationCaseService
 			.ToList();
 	}
 
+	// Ermittelt den Prüfstand und die Empfehlung für einen Fall.
 	public async Task<QualificationCaseReviewSummaryResponse?> GetReviewSummaryAsync(Guid qualificationCaseId)
 	{
 		var qualificationCase = await _dbContext.QualificationCases

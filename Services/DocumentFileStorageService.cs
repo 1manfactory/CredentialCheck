@@ -1,5 +1,6 @@
 namespace CredentialCheck.Services;
 
+// Speichert hochgeladene Dokumentdateien lokal und prüft Dateityp und Größe.
 public class DocumentFileStorageService
 {
 	private const long MaxFileSizeBytes = 10 * 1024 * 1024;
@@ -30,6 +31,7 @@ public class DocumentFileStorageService
 		_environment = environment;
 	}
 
+	// Speichert die geprüfte Datei und gibt ihre gespeicherten Daten zurück.
 	public async Task<StoredDocumentFile> SaveAsync(IFormFile file)
 	{
 		ValidateFile(file);
@@ -89,6 +91,7 @@ public class DocumentFileStorageService
 	}
 }
 
+// Enthält die Dateidaten nach dem lokalen Speichern.
 public record StoredDocumentFile(
 	string OriginalFileName,
 	string StoredFileName,

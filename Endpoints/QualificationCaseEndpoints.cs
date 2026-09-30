@@ -4,8 +4,10 @@ using CredentialCheck.Validators;
 
 namespace CredentialCheck.Endpoints;
 
+// Stellt API-Endpunkte für das Anlegen und Abrufen von Fällen bereit.
 public static class QualificationCaseEndpoints
 {
+	// Registriert die Endpunkte für Fälle, Status und Prüfübersichten.
 	public static void MapQualificationCaseEndpoints(this WebApplication app)
 	{
 		app.MapGet("/api/cases", async (QualificationCaseService service) =>
